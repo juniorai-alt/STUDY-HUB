@@ -24,7 +24,6 @@
     }
     .glow-1 { top: 10%; left: 20%; }
     .glow-2 { bottom: 20%; right: 15%; background: radial-gradient(circle, #05966920 0%, transparent 70%); }
-    
     .container {
       position: relative;
       z-index: 1;
@@ -32,7 +31,6 @@
       margin: 0 auto;
       padding: 0 20px 40px;
     }
-    
     header {
       display: flex;
       justify-content: space-between;
@@ -69,7 +67,6 @@
       font-weight: 600;
       font-size: 14px;
     }
-    
     .hero {
       text-align: center;
       margin: 40px 0;
@@ -84,11 +81,10 @@
       font-size: 16px;
       margin-bottom: 30px;
     }
-    
     .search-box {
       position: relative;
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0 auto 20px;
     }
     .search-box input {
       width: 100%;
@@ -110,22 +106,40 @@
       transform: translateY(-50%);
       color: #9ca3af;
     }
-    
+    .module-select {
+      max-width: 600px;
+      margin: 0 auto 25px;
+    }
+    .module-select select {
+      width: 100%;
+      padding: 14px 16px;
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .module-select select:focus {
+      outline: none;
+      border-color: #10b981;
+    }
     .filters {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
       margin: 25px 0 40px;
       flex-wrap: wrap;
     }
     .filter-btn {
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
       background: #1a1a24;
       border: 1px solid #2a2a35;
       color: #9ca3af;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
     }
     .filter-btn.active {
       background: #10b981;
@@ -133,7 +147,6 @@
       border-color: #10b981;
       font-weight: 600;
     }
-    
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -150,15 +163,30 @@
       transform: translateY(-5px);
       border-color: #10b981;
     }
-    .resource-type {
+    .resource-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .resource-type, .resource-module, .resource-subject {
       display: inline-block;
       padding: 4px 10px;
       border-radius: 6px;
-      background: #10b98120;
-      color: #10b981;
       font-size: 12px;
       font-weight: 600;
-      margin-bottom: 12px;
+    }
+    .resource-type {
+      background: #10b98120;
+      color: #10b981;
+    }
+    .resource-module {
+      background: #05966920;
+      color: #059669;
+    }
+    .resource-subject {
+      background: #0ea5e920;
+      color: #0ea5e9;
     }
     .resource-title {
       font-weight: 700;
@@ -223,19 +251,34 @@
       <p>Open textbooks, MIT lectures, construction standards, and site practice. All legal, all free.</p>
       
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search Structures, Surveying, CAD, Concrete..." onkeyup="debounceSearch()">
+        <input type="text" id="searchInput" placeholder="Search Structures, GBC, CAD, Materials..." onkeyup="debounceSearch()">
         <div class="search-icon">🔍</div>
+      </div>
+
+      <div class="module-select">
+        <select id="moduleSelect" onchange="setModule()">
+          <option value="all">All Modules</option>
+          <option value="module1">Module 1 - First Year</option>
+          <option value="module2">Module 2 - Second Year</option>
+          <option value="module3">Module 3 - Third Year</option>
+        </select>
       </div>
     </div>
 
-    <div class="filters">
-      <button class="filter-btn active" onclick="setFilter('all')">All</button>
-      <button class="filter-btn" onclick="setFilter('textbook')">Textbooks</button>
-      <button class="filter-btn" onclick="setFilter('video')">Video Lectures</button>
-      <button class="filter-btn" onclick="setFilter('structures')">Structures</button>
+    <div class="filters" id="subjectFilters">
+      <button class="filter-btn active" onclick="setFilter('all')">All Subjects</button>
+      <button class="filter-btn" onclick="setFilter('structures1')">Structures 1</button>
+      <button class="filter-btn" onclick="setFilter('gbc')">GBC</button>
+      <button class="filter-btn" onclick="setFilter('plant')">Construction Plant</button>
+      <button class="filter-btn" onclick="setFilter('materials')">Materials</button>
+      <button class="filter-btn" onclick="setFilter('workshop')">Workshop</button>
+      <button class="filter-btn" onclick="setFilter('maths')">Engineering Maths</button>
       <button class="filter-btn" onclick="setFilter('surveying')">Surveying</button>
-      <button class="filter-btn" onclick="setFilter('cad')">CAD/BIM</button>
-      <button class="filter-btn" onclick="setFilter('construction')">Construction Tech</button>
+      <button class="filter-btn" onclick="setFilter('physics')">Physical Science</button>
+      <button class="filter-btn" onclick="setFilter('drawing')">Technical Drawing</button>
+      <button class="filter-btn" onclick="setFilter('communication')">Communication</button>
+      <button class="filter-btn" onclick="setFilter('entrepreneurship')">Entrepreneurship</button>
+      <button class="filter-btn" onclick="setFilter('ict')">ICT</button>
     </div>
 
     <div class="grid" id="resourceGrid">
@@ -248,13 +291,13 @@
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 
     const firebaseConfig = {
-      apiKey: "AIzaSyAOiDtN_PWKerMLKqSe10eshBCW4UUvUFE",
-      authDomain: "studies-9fe36.firebaseapp.com",
-      databaseURL: "https://studies-9fe36-default-rtdb.firebaseio.com",
-      projectId: "studies-9fe36",
-      storageBucket: "studies-9fe36.firebasestorage.app",
-      messagingSenderId: "343910673142",
-      appId: "1:343910673142:web:3849a63bfbbbcb94811ad7"
+      apiKey: "AIzaSyA4L8OdOUvJ9IlbB--nhOd_SGYI9pj8LL0",
+      authDomain: "eeror-733ac.firebaseapp.com",
+      databaseURL: "https://eeror-733ac-default-rtdb.firebaseio.com",
+      projectId: "eeror-733ac",
+      storageBucket: "eeror-733ac.firebasestorage.app",
+      messagingSenderId: "398067289132",
+      appId: "1:398067289132:web:50f5c3bdceff78d1f19589"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -271,103 +314,254 @@
     }
 
     const resources = [
+      // MODULE 1 - First Year Subjects
       {
-        title: "Statics and Strength of Materials - OpenStax",
+        title: "Statics - Forces & Equilibrium",
         type: "textbook",
-        desc: "Core engineering mechanics textbook. Free PDF. Covers beams, trusses, stress analysis.",
+        desc: "Introduction to forces, moments, equilibrium of particles and rigid bodies. Core for Structures 1.",
+        source: "OpenStax Physics",
+        link: "https://openstax.org/books/college-physics/pages/9-introduction-to-statics-and-torque",
+        category: "structures1",
+        module: "module1",
+        subject: "Structures 1"
+      },
+      {
+        title: "Building Construction Basics - Foundation to Roof",
+        type: "video",
+        desc: "GBC fundamentals: foundations, walls, floors, roofs, finishes. Kenyan context.",
+        source: "YouTube EDU",
+        link: "https://www.youtube.com/results?search_query=general+building+construction+basics",
+        category: "gbc",
+        module: "module1",
+        subject: "GBC"
+      },
+      {
+        title: "Construction Plant & Equipment Guide",
+        type: "textbook",
+        desc: "Types of plant: excavators, cranes, mixers. Operations, safety, maintenance.",
+        source: "Internet Archive",
+        link: "https://archive.org/search.php?query=construction+plant+equipment",
+        category: "plant",
+        module: "module1",
+        subject: "Construction Plant"
+      },
+      {
+        title: "Building Materials - Concrete, Bricks, Steel",
+        type: "textbook",
+        desc: "Properties of cement, aggregates, timber, steel. Material testing basics.",
+        source: "NPTEL",
+        link: "https://nptel.ac.in/courses/105102088",
+        category: "materials",
+        module: "module1",
+        subject: "Construction Materials"
+      },
+      {
+        title: "Workshop Practice - Hand Tools & Machines",
+        type: "video",
+        desc: "Mechanical workshop: fitting, welding, carpentry, plumbing basics.",
+        source: "YouTube EDU",
+        link: "https://www.youtube.com/results?search_query=mechanical+workshop+practice",
+        category: "workshop",
+        module: "module1",
+        subject: "Workshop (Mechanic)"
+      },
+      {
+        title: "Engineering Mathematics 1 - Algebra & Calculus",
+        type: "textbook",
+        desc: "Matrices, differentiation, integration for civil engineering applications.",
+        source: "OpenStax",
+        link: "https://openstax.org/subjects/math",
+        category: "maths",
+        module: "module1",
+        subject: "Engineering Mathematics"
+      },
+      {
+        title: "Chain Surveying & Leveling Basics",
+        type: "video",
+        desc: "Introduction to surveying: chain survey, compass, dumpy level. Field work.",
+        source: "NPTEL",
+        link: "https://nptel.ac.in/courses/105107122",
+        category: "surveying",
+        module: "module1",
+        subject: "Surveying"
+      },
+      {
+        title: "Applied Physics for Engineers",
+        type: "textbook",
+        desc: "Mechanics, heat, light, electricity. Practical applications in construction.",
+        source: "OpenStax Physics",
+        link: "https://openstax.org/books/college-physics/pages/1-introduction",
+        category: "physics",
+        module: "module1",
+        subject: "Physical Science"
+      },
+      {
+        title: "Engineering Drawing - Orthographic Projection",
+        type: "video",
+        desc: "First & third angle projection, dimensioning, scales. Technical drawing basics.",
+        source: "NPTEL",
+        link: "https://nptel.ac.in/courses/112105122",
+        category: "drawing",
+        module: "module1",
+        subject: "Technical Drawing"
+      },
+      {
+        title: "Communication Skills for Engineers",
+        type: "textbook",
+        desc: "Report writing, presentation skills, technical communication. Free PDF.",
+        source: "Open Textbook Library",
+        link: "https://open.umn.edu/opentextbooks/textbooks/communication",
+        category: "communication",
+        module: "module1",
+        subject: "Communication Skills"
+      },
+      {
+        title: "Entrepreneurship Development",
+        type: "video",
+        desc: "Business plans, tendering, site management, construction business basics.",
+        source: "YouTube EDU",
+        link: "https://www.youtube.com/results?search_query=entrepreneurship+for+engineers",
+        category: "entrepreneurship",
+        module: "module1",
+        subject: "Entrepreneurship"
+      },
+      {
+        title: "Computer Applications - MS Office & AutoCAD Basics",
+        type: "video",
+        desc: "Excel for quantity surveying, Word for reports, intro to AutoCAD 2D.",
+        source: "Microsoft Learn",
+        link: "https://learn.microsoft.com/en-us/training/",
+        category: "ict",
+        module: "module1",
+        subject: "ICT"
+      },
+
+      // MODULE 2 - Second Year
+      {
+        title: "Strength of Materials - Beams & Stress",
+        type: "textbook",
+        desc: "Bending moment, shear force, deflection. Core structures topic.",
         source: "OpenStax",
         link: "https://openstax.org/subjects/engineering",
-        category: "structures"
+        category: "structures",
+        module: "module2",
+        subject: "Structures"
       },
       {
         title: "MIT 1.050: Solid Mechanics",
         type: "video",
-        desc: "Full MIT course on mechanics of materials. 36 lectures + assignments.",
+        desc: "Full MIT course on mechanics of materials. 36 lectures.",
         source: "MIT OCW",
         link: "https://ocw.mit.edu/courses/1-050-solid-mechanics-fall-2004/",
-        category: "structures"
+        category: "structures",
+        module: "module2",
+        subject: "Structures"
       },
       {
-        title: "Surveying - Fundamentals and Practices",
+        title: "Advanced Surveying - Theodolite & Total Station",
         type: "textbook",
-        desc: "NPTEL open textbook covering leveling, theodolite, GPS, total station.",
+        desc: "Angular measurement, traversing, contouring, GPS surveying.",
         source: "NPTEL",
         link: "https://nptel.ac.in/courses/105107122",
-        category: "surveying"
+        category: "surveying",
+        module: "module2",
+        subject: "Surveying"
       },
       {
-        title: "Construction Materials - Open Course",
+        title: "Concrete Technology & Testing",
         type: "video",
-        desc: "YouTube series on concrete, steel, timber, soil testing. Lab demos included.",
+        desc: "Mix design, slump test, cube testing, curing. Lab demos included.",
         source: "YouTube EDU",
         link: "https://www.youtube.com/playlist?list=PLbMVogVj5nJQbXzQv8Wq8zQv8Wq8zQv8W",
-        category: "construction"
+        category: "construction",
+        module: "module2",
+        subject: "Construction Technology"
+      },
+
+      // MODULE 3 - Third Year
+      {
+        title: "Structural Analysis - Indeterminate Structures",
+        type: "video",
+        desc: "Moment distribution, slope deflection, influence lines. 40 lectures.",
+        source: "NPTEL",
+        link: "https://nptel.ac.in/courses/105105166",
+        category: "structures",
+        module: "module3",
+        subject: "Structures"
       },
       {
-        title: "AutoCAD Civil 3D Tutorials - Official",
+        title: "AutoCAD Civil 3D - Road Design",
         type: "video",
-        desc: "Autodesk official free tutorials for road design, grading, corridors.",
+        desc: "Autodesk official tutorials for corridors, grading, surfaces.",
         source: "Autodesk",
         link: "https://www.autodesk.com/learn/ondemand/civil-3d",
-        category: "cad"
+        category: "cad",
+        module: "module3",
+        subject: "CAD/BIM"
+      },
+      {
+        title: "Revit for Structures",
+        type: "video",
+        desc: "BIM fundamentals for structural modeling and detailing.",
+        source: "Autodesk",
+        link: "https://www.autodesk.com/learn/ondemand/revit-structure",
+        category: "cad",
+        module: "module3",
+        subject: "CAD/BIM"
+      },
+      {
+        title: "Soil Mechanics & Foundation Engineering",
+        type: "textbook",
+        desc: "MIT 1.361 Soil Mechanics. Bearing capacity, settlement, foundations.",
+        source: "MIT OCW",
+        link: "https://ocw.mit.edu/courses/1-361-advanced-soil-mechanics-fall-2004/",
+        category: "construction",
+        module: "module3",
+        subject: "Geotechnical"
       },
       {
         title: "Building Construction Handbook",
         type: "textbook",
-        desc: "Public domain handbook: foundations, masonry, roofing, finishes. Free PDF.",
+        desc: "Foundations, masonry, roofing, finishes. Free PDF.",
         source: "Internet Archive",
         link: "https://archive.org/details/buildingconstruct00frea",
-        category: "construction"
+        category: "construction",
+        module: "module3",
+        subject: "Construction Technology"
       },
       {
-        title: "Structural Analysis - NPTEL",
-        type: "video",
-        desc: "IIT course: determinate/indeterminate structures, influence lines. 40 lectures.",
-        source: "NPTEL",
-        link: "https://nptel.ac.in/courses/105105166",
-        category: "structures"
-      },
-      {
-        title: "Construction Technology Standards - Kenya",
+        title: "KEBS Construction Standards",
         type: "textbook",
-        desc: "Kenya Bureau of Standards public docs for concrete, steel, safety.",
+        desc: "Kenya Bureau of Standards docs for concrete, steel, safety.",
         source: "KEBS",
         link: "https://www.kebs.org/index.php?option=com_content&view=article&id=78",
-        category: "construction"
-      },
-      {
-        title: "Revit for Structures - Free Course",
-        type: "video",
-        desc: "BIM fundamentals for structural modeling. Official Autodesk content.",
-        source: "Autodesk",
-        link: "https://www.autodesk.com/learn/ondemand/revit-structure",
-        category: "cad"
-      },
-      {
-        title: "Soil Mechanics - MIT OCW",
-        type: "textbook",
-        desc: "MIT 1.361 Soil Mechanics. Notes + problem sets. Critical for foundations.",
-        source: "MIT OCW",
-        link: "https://ocw.mit.edu/courses/1-361-advanced-soil-mechanics-fall-2004/",
-        category: "construction"
+        category: "construction",
+        module: "module3",
+        subject: "Standards"
       }
     ];
 
     let currentFilter = 'all';
+    let currentModule = 'all';
     let searchTimeout;
 
     function renderResources(items) {
       const grid = document.getElementById('resourceGrid');
       if (!items.length) {
-        grid.innerHTML = '<div class="loading">No resources found</div>';
+        grid.innerHTML = '<div class="loading">No resources found for this module/subject</div>';
         return;
       }
 
       grid.innerHTML = '';
       items.forEach(r => {
+        const moduleLabel = r.module.replace('module', 'Module ');
         grid.innerHTML += `
           <div class="resource-card">
-            <div class="resource-type">${r.type.toUpperCase()}</div>
+            <div class="resource-badges">
+              <div class="resource-type">${r.type.toUpperCase()}</div>
+              <div class="resource-module">${moduleLabel}</div>
+              <div class="resource-subject">${r.subject}</div>
+            </div>
             <div class="resource-title">${r.title}</div>
             <div class="resource-desc">${r.desc}</div>
             <div class="resource-meta">
@@ -383,13 +577,17 @@
       const query = document.getElementById('searchInput').value.toLowerCase();
       let filtered = resources;
 
+      if (currentModule !== 'all') {
+        filtered = filtered.filter(r => r.module === currentModule);
+      }
       if (currentFilter !== 'all') {
         filtered = filtered.filter(r => r.category === currentFilter);
       }
       if (query) {
         filtered = filtered.filter(r => 
           r.title.toLowerCase().includes(query) || 
-          r.desc.toLowerCase().includes(query)
+          r.desc.toLowerCase().includes(query) ||
+          r.subject.toLowerCase().includes(query)
         );
       }
       renderResources(filtered);
@@ -399,6 +597,11 @@
       currentFilter = filter;
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
+      filterResources();
+    }
+
+    window.setModule = function() {
+      currentModule = document.getElementById('moduleSelect').value;
       filterResources();
     }
 
