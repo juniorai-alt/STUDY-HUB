@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNBORN STUDIES - Civil Engineering Resources</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .bg-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #10b98130 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+    }
+    .glow-1 { top: 10%; left: 20%; }
+    .glow-2 { bottom: 20%; right: 15%; background: radial-gradient(circle, #05966920 0%, transparent 70%); }
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid #2a2a35;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .logo .unborn { color: #10b981; }
+    .nav-right {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-link {
+      color: #10b981;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .hero {
+      text-align: center;
+      margin: 40px 0;
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .hero p {
+      color: #9ca3af;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+    .search-box {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 16px 50px 16px 20px;
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+    }
+    .search-box input:focus {
+      outline: none;
+      border-color: #10b981;
+    }
+    .search-icon {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+    }
+    .filters {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 25px 0 40px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      color: #9ca3af;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .filter-btn.active {
+      background: #10b981;
+      color: #000;
+      border-color: #10b981;
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .resource-card {
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 16px;
+      padding: 20px;
+      transition: transform 0.2s;
+    }
+    .resource-card:hover {
+      transform: translateY(-5px);
+      border-color: #10b981;
+    }
+    .resource-type {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: #10b98120;
+      color: #10b981;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .resource-title {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .resource-desc {
+      color: #9ca3af;
+      font-size: 14px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .resource-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .watch-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      background: #10b981;
+      color: #000;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+    .watch-btn:hover { background: #059669; }
+    .loading {
+      text-align: center;
+      color: #9ca3af;
+      padding: 40px;
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">📚</div>
+        <div><span class="unborn">UNBORN</span> STUDIES</div>
+      </div>
+      <div class="nav-right">
+        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="#" onclick="logout()" class="nav-link">Logout</a>
+      </div>
+    </header>
+
+    <div class="hero">
+      <h1>Free Diploma in Civil Engineering Resources</h1>
+      <p>Open textbooks, MIT lectures, construction standards, and site practice. All legal, all free.</p>
+      
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search Structures, Surveying, CAD, Concrete..." onkeyup="debounceSearch()">
+        <div class="search-icon">🔍</div>
+      </div>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" onclick="setFilter('all')">All</button>
+      <button class="filter-btn" onclick="setFilter('textbook')">Textbooks</button>
+      <button class="filter-btn" onclick="setFilter('video')">Video Lectures</button>
+      <button class="filter-btn" onclick="setFilter('structures')">Structures</button>
+      <button class="filter-btn" onclick="setFilter('surveying')">Surveying</button>
+      <button class="filter-btn" onclick="setFilter('cad')">CAD/BIM</button>
+      <button class="filter-btn" onclick="setFilter('construction')">Construction Tech</button>
+    </div>
+
+    <div class="grid" id="resourceGrid">
+      <div class="loading">Loading resources...</div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4L8OdOUvJ9IlbB--nhOd_SGYI9pj8LL0",
+      authDomain: "eeror-733ac.firebaseapp.com",
+      databaseURL: "https://eeror-733ac-default-rtdb.firebaseio.com",
+      projectId: "eeror-733ac",
+      storageBucket: "eeror-733ac.firebasestorage.app",
+      messagingSenderId: "398067289132",
+      appId: "1:398067289132:web:50f5c3bdceff78d1f19589"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = 'login.html';
+    });
+
+    window.logout = function() {
+      signOut(auth).then(() => {
+        window.location.href = 'login.html';
+      });
+    }
+
+    const resources = [
+      {
+        title: "Statics and Strength of Materials - OpenStax",
+        type: "textbook",
+        desc: "Core engineering mechanics textbook. Free PDF. Covers beams, trusses, stress analysis.",
+        source: "OpenStax",
+        link: "https://openstax.org/subjects/engineering",
+        category: "structures"
+      },
+      {
+        title: "MIT 1.050: Solid Mechanics",
+        type: "video",
+        desc: "Full MIT course on mechanics of materials. 36 lectures + assignments.",
+        source: "MIT OCW",
+        link: "https://ocw.mit.edu/courses/1-050-solid-mechanics-fall-2004/",
+        category: "structures"
+      },
+      {
+        title: "Surveying - Fundamentals and Practices",
+        type: "textbook",
+        desc: "NPTEL open textbook covering leveling, theodolite, GPS, total station.",
+        source: "NPTEL",
+        link: "https://nptel.ac.in/courses/105107122",
+        category: "surveying"
+      },
+      {
+        title: "Construction Materials - Open Course",
+        type: "video",
+        desc: "YouTube series on concrete, steel, timber, soil testing. Lab demos included.",
+        source: "YouTube EDU",
+        link: "https://www.youtube.com/playlist?list=PLbMVogVj5nJQbXzQv8Wq8zQv8Wq8zQv8W",
+        category: "construction"
+      },
+      {
+        title: "AutoCAD Civil 3D Tutorials - Official",
+        type: "video",
+        desc: "Autodesk official free tutorials for road design, grading, corridors.",
+        source: "Autodesk",
+        link: "https://www.autodesk.com/learn/ondemand/civil-3d",
+        category: "cad"
+      },
+      {
+        title: "Building Construction Handbook",
+        type: "textbook",
+        desc: "Public domain handbook: foundations, masonry, roofing, finishes. Free PDF.",
+        source: "Internet Archive",
+        link: "https://archive.org/details/buildingconstruct00frea",
+        category: "construction"
+      },
+      {
+        title: "Structural Analysis - NPTEL",
+        type: "video",
+        desc: "IIT course: determinate/indeterminate structures, influence lines. 40 lectures.",
+        source: "NPTEL",
+        link: "https://nptel.ac.in/courses/105105166",
+        category: "structures"
+      },
+      {
+        title: "Construction Technology Standards - Kenya",
+        type: "textbook",
+        desc: "Kenya Bureau of Standards public docs for concrete, steel, safety.",
+        source: "KEBS",
+        link: "https://www.kebs.org/index.php?option=com_content&view=article&id=78",
+        category: "construction"
+      },
+      {
+        title: "Revit for Structures - Free Course",
+        type: "video",
+        desc: "BIM fundamentals for structural modeling. Official Autodesk content.",
+        source: "Autodesk",
+        link: "https://www.autodesk.com/learn/ondemand/revit-structure",
+        category: "cad"
+      },
+      {
+        title: "Soil Mechanics - MIT OCW",
+        type: "textbook",
+        desc: "MIT 1.361 Soil Mechanics. Notes + problem sets. Critical for foundations.",
+        source: "MIT OCW",
+        link: "https://ocw.mit.edu/courses/1-361-advanced-soil-mechanics-fall-2004/",
+        category: "construction"
+      }
+    ];
+
+    let currentFilter = 'all';
+    let searchTimeout;
+
+    function renderResources(items) {
+      const grid = document.getElementById('resourceGrid');
+      if (!items.length) {
+        grid.innerHTML = '<div class="loading">No resources found</div>';
+        return;
+      }
+
+      grid.innerHTML = '';
+      items.forEach(r => {
+        grid.innerHTML += `
+          <div class="resource-card">
+            <div class="resource-type">${r.type.toUpperCase()}</div>
+            <div class="resource-title">${r.title}</div>
+            <div class="resource-desc">${r.desc}</div>
+            <div class="resource-meta">
+              <span>Source: ${r.source}</span>
+            </div>
+            <a href="${r.link}" target="_blank" class="watch-btn">Open Resource</a>
+          </div>
+        `;
+      });
+    }
+
+    function filterResources() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      let filtered = resources;
+
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(r => r.category === currentFilter);
+      }
+      if (query) {
+        filtered = filtered.filter(r => 
+          r.title.toLowerCase().includes(query) || 
+          r.desc.toLowerCase().includes(query)
+        );
+      }
+      renderResources(filtered);
+    }
+
+    window.setFilter = function(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      filterResources();
+    }
+
+    window.debounceSearch = function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(filterResources, 300);
+    }
+
+    renderResources(resources);
+  </script>
+</body>
+</html>
