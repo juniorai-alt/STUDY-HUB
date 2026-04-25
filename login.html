@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - UNBORN STUDIES</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .bg-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #10b98130 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+    }
+    .glow-1 { top: 10%; left: 20%; }
+    .glow-2 { bottom: 20%; right: 15%; background: radial-gradient(circle, #05966920 0%, transparent 70%); }
+    .auth-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 400px;
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 700;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .logo .unborn { color: #10b981; }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .sub {
+      color: #9ca3af;
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    .tabs {
+      display: flex;
+      background: #0a0a0f;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: #9ca3af;
+    }
+    .tab.active {
+      background: #10b981;
+      color: #000;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #e5e7eb;
+    }
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #0a0a0f;
+      border: 1px solid #2a2a35;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+    }
+    input:focus {
+      outline: none;
+      border-color: #10b981;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      background: #10b981;
+      color: #000;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 8px;
+    }
+    .btn:hover { background: #059669; }
+    .btn:disabled {
+      background: #2a2a35;
+      color: #6b7280;
+      cursor: not-allowed;
+    }
+    .divider {
+      text-align: center;
+      color: #6b7280;
+      font-size: 13px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: #2a2a35;
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+    .google-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      background: #0a0a0f;
+      border: 1px solid #2a2a35;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .google-btn:hover { border-color: #10b981; }
+    .status {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 16px;
+      min-height: 20px;
+    }
+    .error { color: #ef4444; }
+    .success { color: #10b981; }
+    .user-bar {
+      display: none;
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logout-btn {
+      padding: 8px 14px;
+      background: #2a2a35;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: #000000f0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-box {
+      background: #1a1a24;
+      border: 1px solid #2a2a35;
+      border-radius: 16px;
+      max-width: 400px;
+      width: 100%;
+      padding: 24px;
+    }
+    .close-modal {
+      width: 100%;
+      padding: 12px;
+      background: #2a2a35;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  
+  <div class="auth-container">
+    <div class="logo">
+      <div class="logo-icon">📚</div>
+      <div><span class="unborn">UNBORN</span> STUDIES</div>
+    </div>
+    
+    <div class="user-bar" id="userBar">
+      <div>
+        <div style="font-weight: 600;" id="userEmail"></div>
+        <div style="font-size: 12px; color: #9ca3af;">Logged in</div>
+      </div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    
+    <div id="authForms">
+      <h1 id="formTitle">Welcome Back</h1>
+      <p class="sub" id="formSub">Sign in to access UNBORN STUDIES</p>
+      
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('login')">Login</div>
+        <div class="tab" onclick="switchTab('signup')">Sign Up</div>
+      </div>
+      
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="you@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="••••••••">
+      </div>
+
+      <div class="form-group" id="forgotPassLink" style="text-align: right; margin-top: -8px; margin-bottom: 20px;">
+        <a href="#" onclick="showResetPassword()" style="color: #10b981; font-size: 13px; text-decoration: none;">Forgot Password?</a>
+      </div>
+      
+      <button class="btn" id="authBtn" onclick="handleAuth()">Login</button>
+      
+      <div class="divider">or</div>
+      
+      <button class="google-btn" onclick="googleLogin()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+      
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="resetModal">
+    <div class="modal-box">
+      <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 8px;">Reset Password</h2>
+      <p style="color: #9ca3af; font-size: 14px; margin-bottom: 20px;">Enter your email and we'll send a reset link</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="resetEmail" placeholder="you@example.com">
+      </div>
+      <button class="btn" onclick="sendPasswordReset()">Send Reset Link</button>
+      <button class="close-modal" onclick="closeResetModal()">Cancel</button>
+      <div class="status" id="resetStatus"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      signInWithPopup, 
+      GoogleAuthProvider, 
+      onAuthStateChanged, 
+      signOut,
+      sendPasswordResetEmail
+    } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAOiDtN_PWKerMLKqSe10eshBCW4UUvUFE",
+      authDomain: "studies-9fe36.firebaseapp.com",
+      databaseURL: "https://studies-9fe36-default-rtdb.firebaseio.com",
+      projectId: "studies-9fe36",
+      storageBucket: "studies-9fe36.firebasestorage.app",
+      messagingSenderId: "343910673142",
+      appId: "1:343910673142:web:3849a63bfbbbcb94811ad7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    
+    let isLogin = true;
+    
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('authForms').style.display = 'none';
+        document.getElementById('userBar').style.display = 'flex';
+        document.getElementById('userEmail').textContent = user.email;
+        setTimeout(() => {
+          window.location.href = 'unborn-studies.html';
+        }, 1500);
+      } else {
+        document.getElementById('authForms').style.display = 'block';
+        document.getElementById('userBar').style.display = 'none';
+      }
+    });
+    
+    window.switchTab = function(mode) {
+      isLogin = mode === 'login';
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('formTitle').textContent = isLogin ? 'Welcome Back' : 'Create Account';
+      document.getElementById('formSub').textContent = isLogin ? 'Sign in to access UNBORN STUDIES' : 'Join UNBORN STUDIES for free';
+      document.getElementById('authBtn').textContent = isLogin ? 'Login' : 'Sign Up';
+      document.getElementById('forgotPassLink').style.display = isLogin ? 'block' : 'none';
+      document.getElementById('status').textContent = '';
+    }
+    
+    window.handleAuth = async function() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const status = document.getElementById('status');
+      const btn = document.getElementById('authBtn');
+      
+      if (!email || !password) {
+        status.textContent = 'Fill in all fields';
+        status.className = 'status error';
+        return;
+      }
+      
+      btn.disabled = true;
+      btn.textContent = 'Please wait...';
+      status.textContent = '';
+      
+      try {
+        if (isLogin) {
+          await signInWithEmailAndPassword(auth, email, password);
+          status.textContent = 'Login successful! Redirecting...';
+          status.className = 'status success';
+        } else {
+          await createUserWithEmailAndPassword(auth, email, password);
+          status.textContent = 'Account created! Redirecting...';
+          status.className = 'status success';
+        }
+      } catch (error) {
+        status.textContent = error.message.replace('Firebase: ', '');
+        status.className = 'status error';
+        btn.disabled = false;
+        btn.textContent = isLogin ? 'Login' : 'Sign Up';
+      }
+    }
+    
+    window.googleLogin = async function() {
+      const status = document.getElementById('status');
+      try {
+        await signInWithPopup(auth, provider);
+        status.textContent = 'Login successful! Redirecting...';
+        status.className = 'status success';
+      } catch (error) {
+        status.textContent = error.message.replace('Firebase: ', '');
+        status.className = 'status error';
+      }
+    }
+    
+    window.logout = function() {
+      signOut(auth);
+    }
+
+    window.showResetPassword = function() {
+      document.getElementById('resetModal').style.display = 'flex';
+      document.getElementById('resetEmail').value = document.getElementById('email').value;
+    }
+
+    window.closeResetModal = function() {
+      document.getElementById('resetModal').style.display = 'none';
+      document.getElementById('resetStatus').textContent = '';
+    }
+
+    window.sendPasswordReset = async function() {
+      const email = document.getElementById('resetEmail').value.trim();
+      const status = document.getElementById('resetStatus');
+      if (!email) {
+        status.textContent = 'Enter your email';
+        status.className = 'status error';
+        return;
+      }
+      try {
+        await sendPasswordResetEmail(auth, email);
+        status.textContent = 'Reset link sent! Check your inbox.';
+        status.className = 'status success';
+        setTimeout(closeResetModal, 2000);
+      } catch (error) {
+        status.textContent = error.message.replace('Firebase: ', '');
+        status.className = 'status error';
+      }
+    }
+  </script>
+</body>
+  </html>
